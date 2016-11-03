@@ -795,7 +795,7 @@ Em duas dimensões isso é o Teorema de Pitágoras! (faça um desenho de um veto
 Agora vamos pensar na norma ao quadrado da diferença de dois vetores:
 
 $$
-\|(a-b)\|^2 = (a - b) \cdot (a-b) = a \cdot a + b \cdot b - 2 a \cdot b = \|a\|^2 + \|b\|^2 - 2(a \cdot b)
+\|(a-b)\|^2 = (a - b) \cdot (a-b) = a \cdot a + b \cdot b - 2(a \cdot b) = \|a\|^2 + \|b\|^2 - 2(a \cdot b)
 $$
 
 Guarde esse resultado e vamos lembrar da lei dos cossenos, que, usando a notação dessa figura:

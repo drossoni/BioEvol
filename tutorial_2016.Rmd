@@ -1049,7 +1049,7 @@ means = daply(dentus, .(species), function(x) colMeans(x[,1:4]))
 cov(means)
 ```
 
-Não é identico, mas tá quase lá. Com mais espécies essas duas estimativas ficam cada vez mais similares.
+Não é idêntico, mas tá quase lá. Com mais espécies essas duas estimativas ficariam cada vez mais similares.
 
 Agora podemos comparar os componentes principais entre essas duas matrizes ($\mathbf{B}$ e $\mathbf{W}$)
 

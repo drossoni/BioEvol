@@ -1009,7 +1009,7 @@ Agora que você tem os PCs e os $\Delta z$, sabe fazer uma correlação de vetor
 
 ## Matrizes dentro e entre grupos
 
-Vamos usar nosso recem adquirido conhecimento do que é uma matriz dentro de grupos para reproduzir a análise do artigo da semana passada. Os autores usaram o seguinte argumento: se a diversificação de um grupo de espécies se deu por deriva ou seleção correlacionada, esperamos que as médias das espécies estejam distribuidas de acordo com a matriz de covariância ancestral. Graficamente em duas dimensões seria algo como:
+Vamos usar nosso recém adquirido conhecimento do que é uma matriz dentro de grupos para reproduzir a análise do artigo da semana passada. Os autores usaram o seguinte argumento: se a diversificação de um grupo de espécies se deu por deriva ou seleção correlacionada, esperamos que as médias das espécies estejam distribuidas de acordo com a matriz de covariância ancestral. Graficamente em duas dimensões seria algo como:
 
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("drift.png")

@@ -1015,11 +1015,11 @@ Vamos usar nosso recem adquirido conhecimento do que é uma matriz dentro de gru
 knitr::include_graphics("drift.png")
 ```
 
-Cada elipse cinza representa uma população atual. A elipse amarela representa a matriz de covariância ancestral, e a  elipse grande _salmon_ é a matriz de covariância entre as médias das populações atuais. Sobre deriva, esperamos que a matriz amarela e a salmão estejam alinhadas.
+Cada elipse cinza representa uma população atual. A elipse amarela representa a matriz de covariância ancestral (dentro de grupos), e a elipse grande _salmon_ é a matriz de covariância entre as populações atuais. Sobre deriva, esperamos que a matriz amarela e a salmão estejam alinhadas.
 
 A matriz amarela é a nossa $\mathbf{W}$, que já calculamos. Agora, vamos calcular a matriz de covariância entre grupos (between-groups), a matriz $\mathbf{B}$. 
 
-A matrix $\mathbf{B}$ oficialmente é a matriz residual quando a variação entro de grupos e excluida da variação total. Para fazer essa conta podemos usar novamente a função lm() e obter a soma dos residuos ao quadrado (uma espécie de medida da variação total de todos os individuos em relação à média). Fazemos isso tanto para a variação entre grupos quanto dentro de grupos:
+A matrix $\mathbf{B}$, oficialmente, é a matriz residual quando a variação dentro de grupos é excluída da variação total. Para fazer essa conta, podemos usar novamente a função lm() e obter a soma dos residuos ao quadrado (uma espécie de medida da variação total de todos os individuos em relação à média). Fazemos isso tanto para a variação entre grupos quanto dentro de grupos:
 
 ```{r}
 # Modelo sem preditores (só com um intercepto) me da os residuos em relação à media total

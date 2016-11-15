@@ -6,7 +6,7 @@ output:
   html_document:
     toc: true
     toc_float:           
-          collapsed: true
+          collapsed: false
           smooth_scroll: false
     number_sections: true
     theme: flatly
@@ -1076,3 +1076,162 @@ O que essa correlação te diz sobre a variação entre e dentro de grupos? Quai
 
     __Abstract:__ 
     Most biological systems are formed by component parts that are to some degree interrelated. Groups of parts that are more associated among themselves and are relatively autonomous from others are called modules. One of the consequences of modularity is that biological systems usually present an unequal distribution of the genetic variation among traits. Estimating the covariance matrix that describes these systems is a difficult problem due to a number of factors such as poor sample sizes and measurement errors. We show that this problem will be exacerbated whenever matrix inversion is required, as in directional selection reconstruction analysis. We explore the consequences of varying degrees of modularity and signal-to-noise ratio on selection reconstruction. We then present and test the efficiency of available methods for controlling noise in matrix estimates. In our simulations, controlling matrices for noise vastly improves the reconstruction of selection gradients. We also perform an analysis of selection gradients reconstruction over a New World Monkeys skull database to illustrate the impact of noise on such analyses. Noise-controlled estimates render far more plausible interpretations that are in full agreement with previous results.
+    
+# Objetivos da aula 6 
+
+- Calcular os gradientes de seleção ($\beta$) ao longo da filogenia
+- Calcular a correlação entre gradientes de seleção resposta à seleção ($\Delta z$)
+
+## A equação do criador
+
+Para entender a equação de resposta à seleção, vamos lembrar da herdabilidade (relacionada com a covariância entre pais e filhos). Pense que temos uma população expressando um caráter quantitativo qualquer com herdabilidade ($h^2$) de 0.6. Isso significa que nessa população, se fizermos uma gráfico com a média do valor do caráter nos pais no eixo $x$ e o falor fenotípico dos filhos no eixo $y$, centralizando o grafico na média dos pais, teriamos alguma coisa assim:
+
+```{r, echo = FALSE}
+library(mvtnorm)
+library(ggplot2)
+set.seed(42)
+x = rnorm(100, 0, 1)
+y = 0.6 * x + rnorm(100, 0, 0.3)
+data = as.data.frame(scale(data.frame(x, y), scale = FALSE))
+model = lm(data$y ~ data$x)
+c = coef(model)
+ggplot(data, aes(x, y)) + geom_point() + theme_bw() + coord_fixed() + labs(x = "Fenótipo dos pais", y = "Fenótipo dos filhos") + geom_hline(yintercept = 0) + geom_vline(xintercept = 0)
+```
+
+Nessa população, vamos aplicar um regime de seleção direcional no fenótipo dos pais. Apenas pais com fenótipo uma unidade maior que á média irão deixar descendentes. Vamos usar o gráfico para descobrir a nova média dos filhos:
+
+```{r, echo = FALSE}
+x_mean = mean(data[data$x > 1, "x"])
+y_mean = mean(data[data$x > 1, "y"])
+shade <- data.frame(x = c(1, 1, 2.5, 2.5, 1), y = c(-2, 2, 2, -2, -2))
+ggplot(data, aes(x, y)) + geom_polygon(data = shade, aes(x, y), fill = "lightblue", alpha = 0.5) + geom_point() + theme_bw() + coord_fixed() + labs(x = "Fenótipo dos pais", y = "Fenótipo dos filhos") + geom_hline(yintercept = 0) + geom_vline(xintercept = 0) + geom_smooth(method = "lm", color = "blue", se = FALSE) + geom_segment(x = x_mean, xend=x_mean, y = 0, yend = c[2] * x_mean, linetype = "dashed", size = 2)  + geom_segment(x = 0, xend=x_mean, y = c[2] * x_mean, yend = c[2] * x_mean, linetype = "dashed", size = 2) 
+```
+
+A região em azul representa o limiar de seleção (apenas pais maiores que 1 deixam descententes). A a média dos pais depois da seleção está marcada pela linha tracejada vertical. Usando uma regressão linear, podemos descobrir a média dos filhos dos pais que sobrevivem à seleção. A linha tracejada horizontal marca a média dos filhos após a seleção. O coeficiente de inclinação da regressão entre pais e filhos é a herdabilidade do caráter na população. Como nós centralizamos os pais e a reta de regressão passa pelo zero, sabemos que a média dos pais e filhos antes da regressão eram iguais. 
+
+A diferença entre a média dos pais antes e depois da seleção é chamada de diferencial de seleção ($S$), enquando a diferença na média dos filhos é chamada de resposta à seleção ($R$). A razão entre ela, ou o coeficiente da inclinação da reta de regressão entre pais e filhos, ou a tangente do angulo da reta, é a herdabilidade ($h^2$). Graficamente:
+
+```{r, echo = FALSE}
+S = data.frame(x = c(0, 0, x_mean, x_mean),
+               y = c(0, - 0.1, - 0.1, 0))
+
+R = data.frame(x = c(-0.1, -0.1, 0),
+               y = c(0, c[2] * x_mean, c[2] * x_mean))
+
+ggplot(data, aes(x, y)) + geom_polygon(data = shade, aes(x, y), fill = "lightblue", alpha = 0.5) + geom_point(alpha = 0.3) + theme_bw() + coord_fixed() + labs(x = "Fenótipo dos pais", y = "Fenótipo dos filhos") + geom_hline(yintercept = 0) + geom_vline(xintercept = 0) + geom_smooth(method = "lm", color = "blue", se = FALSE) + geom_segment(x = x_mean, xend=x_mean, y = 0, yend = c[2] * x_mean, linetype = "dashed", size = 2)  + geom_segment(x = 0, xend=x_mean, y = c[2] * x_mean, yend = c[2] * x_mean, linetype = "dashed", size = 2) + geom_line(data = S, color = "red") + annotate("text", x = 0.7, y = -0.2, label = "S", size = 5) + geom_line(data = R, color = "red") + annotate("text", x = -0.2, y = 0.45, label = "R", size = 5) + geom_segment(x = -0.1, xend = 0, y = 0, yend = 0, color = "red")
+```
+
+Juntando tudo isso, podemos escrever a equação do criador:
+
+$$
+R = h^2S
+$$
+
+Ou seja, a a resposta à seleção direcional é uma combinação entre a intensidade de seleção (quanto maior o $S$ maior a intensidade de seleção)  e a variação disponível que é herdável (a herdabilidade, a regressão entre pais e filhos). Nesse caso, temos $S = 1.44$, $h^2 = 0.6$ e, portanto, $R = 0.87$. 
+
+## Equação de Lande
+
+O que acontece quando temos mais de um caráter no sistem? Para entender o problema, pense que estamos olhando para dois caracteres nos pais, e aplicando a mesma seleção em um deles. Imagine que esses dois caracteres tenham uma correlação fenotípica de 0.8 entre eles:
+
+```{r}
+set.seed(42)
+xy = data.frame(rmvnorm(100, sigma = matrix(c(1, 0.8, 0.8, 1), 2, 2)))
+names(xy) = c("x","y")
+model = lm(xy$y ~ xy$x)
+c = coef(model)
+ggplot(data, aes(x, y)) + geom_point() + theme_bw() + coord_fixed() + labs(x = "Caráter x nos pais", y = "Caráter y nos pais") + geom_hline(yintercept = 0) + geom_vline(xintercept = 0) + geom_polygon(data = shade, aes(x, y), fill = "lightblue", alpha = 0.5)
+```
+
+Da mesma forma que a correlação entre pais e filhos impoem uma resposta, a correlação entre caracteres impoem um diferencial de seleção correlacionado. Então, se existe um $S_x$, a correlação entre $x$ e $y$ leva a um $S_y$:
+
+```{r}
+x_mean = mean(xy[xy$x > 1, "x"])
+y_mean = mean(xy[xy$x > 1, "y"])
+shade <- data.frame(x = c(1, 1, 2.5, 2.5, 1), y = c(-2, 2.8, 2.8, -2.5, -2.5))
+S_x = data.frame(x = c(0, 0, x_mean, x_mean),
+               y = c(0, - 0.1, - 0.1, 0))
+
+S_y = data.frame(x = c(-0.1, -0.1, 0),
+               y = c(0, y_mean, y_mean))
+
+ggplot(xy, aes(x, y)) + geom_point() + theme_bw() + coord_fixed() + 
+  labs(x = "Caráter x nos pais", y = "Caráter y nos pais") + 
+  geom_hline(yintercept = 0) + geom_vline(xintercept = 0) + 
+  geom_polygon(data = shade, aes(x, y), fill = "lightblue", alpha = 0.5) + 
+  geom_line(data = S_x, color = "red") + annotate("text", x = x_mean/2, y = -0.2, label = "S[x]", size = 5, parse = TRUE) + 
+  geom_line(data = S_y, color = "red") + annotate("text", x = -0.2, y = y_mean/2, label = "S[y]", size = 5, parse = TRUE) + 
+  geom_segment(x = -0.1, xend = 0, y = 0, yend = 0, color = "red")
+```
+
+Esse fenômeno do diferencial de seleção correlacionado complica nossa vida, afinal, como saber qual caráter está sofrendo seleção? Nesse caso, $S = [S_x, S_y] = [1.43, 1.15]$, ambos os caracteres tem médias diferentes depois da seleção. A solução é transformar os dados, colocando eles na escala da matriz de covariação fenotípica. Fazemos isso multiplicando os dados pelo inverso da matriz fenotípica, e o resulado é o seguinde:
+
+```{r, echo = FALSE}
+P = cov(xy)
+xy_p = data.frame(as.matrix(xy) %*% solve(P))
+xy_p = data.frame(t(apply(as.matrix(xy), 1, function(x) solve(P, x))))
+names(xy_p) = c("x", "y")
+xy_p$Selection = ifelse(xy$x > 1, "Survives", "Dies")
+shade <- data.frame(x = c(1, 1, 2.5, 2, 1), y = c(0, 2, 3, 0, 0))
+shade_p = data.frame(t(apply(as.matrix(shade), 1, function(x) solve(P, x))))
+x_mean = mean(xy_p[xy$x > 1, "x"])
+y_mean = mean(xy_p[xy$x > 1, "y"])
+shade_p$Selection = "Survives"
+
+ggplot(xy_p, aes(x, y)) + geom_point() + theme_bw() + coord_fixed() + 
+  labs(x = "Caráter x nos pais (Escala de P)", y = "Caráter y nos pais (Escala de P)") + 
+  geom_polygon(data = shade_p, aes(x, y), fill = "lightblue", alpha = 0.5) + 
+  geom_hline(yintercept = 0) + geom_vline(xintercept = 0) + 
+  geom_line(data = S_x, color = "red") + annotate("text", x = x_mean/2, y = -0.3, label = "beta[x]", size = 5, parse = T) 
+```
+
+A região azul continua representando os individuos que sobrevivem à seleção. Agora a diferença nas médias antes e depois da seleção só é diferente de zero no caráter $x$, só $x$ está sobre seleção. Essas diferenças nas médias na escala da variância fenotípica é chamada de gradiente de seleção ($\beta$), e desconta o efeito das correlações fenotípicas. Olhando para o $\beta$, que nesse caso é o vetor $\beta = [\beta_x, \beta_y] = [1.5, 0]$, sabemos que só o caráter $x$ está sofrendo seleção direcional.
+
+Se haverá resposta correlacionada na próxima geração depende de se os dois caracteres são correlacionados genéticamente. Um jeito de entender isso é pensar que para que haja resposta em y, os filhos dos pais selecionados (com x acima de 1) tem que ser diferentes da média no cárater y. Então a resposta depende de haver covariâncias entre pais e filhos para caracteres diferentes. Em condições razoáveis, a matriz de covariância genética é uma boa aproximação da covariância entre pais e filhos, e podemos prever a resposta no caráter $y$ ($\Delta z_y$) usando a matriz $G$:
+
+$$
+\Delta z_y = G_{y} \times \beta_y + G_{xy} \times \beta_{x} 
+$$
+
+Ou seja, a seleção diretamente em $y$ (dada por $\beta_y$) multiplicado pela variância genética de $y$ ($G_{y}$), mais a seleção em $x$ ($\beta_x$) multiplicado pela covariância genética entre $x$ e $y$ ($G_{xy}$). No nosso exemplo, $\beta_y = 0$ e só haverá resposta evolutiva se $G_{xy}$ for diferente de zero. 
+
+Da mesma forma, podemos escrever a resposta no caráter $x$:
+
+$$
+\Delta z_x = G_{x} \times \beta_x + G_{xy} \times \beta_{y} 
+$$
+
+Podemos juntar essas duas equação numa só usando uma notação vetorial:
+
+$$
+\Delta z = 
+\left[
+\begin{matrix}
+\Delta z_x \\
+\Delta z_y 
+\end{matrix} \right]
+= 
+\left[
+\begin{matrix}
+G_x & G_{xy} \\
+G_{xy} & G_y \\
+\end{matrix} \right]
+\left[
+\begin{matrix}
+\beta_x \\
+\beta_y 
+\end{matrix} \right] 
+=
+G\beta
+$$
+
+Essa é a equaçào multivariada de resposta à seleção, ou a Equação de Lande. Podemos escrever a resposta à seleção em função dos diferenciais de seleção, lembrando que o gradiente de seleção é o diferencial escrito na escala da P. Nesse caso, a equação fica:
+
+$$
+\Delta z = G\beta = GP^{-1}S
+$$
+
+Comparando essa equação com a equação do criador, vemos que $GP^{-1}$ é a quantidade análoga à herdabilidade para vários caracteres.
+
+## Estimando $\beta$
+
+## Comparação de $\Delta z$ e $\beta$

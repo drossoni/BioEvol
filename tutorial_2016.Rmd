@@ -1224,7 +1224,13 @@ G_{xy} & G_y \\
 G\beta
 $$
 
-Essa é a equação multivariada de resposta à seleção, ou a Equação de Lande. Podemos escrever a resposta à seleção em função dos diferenciais de seleção, lembrando que o gradiente de seleção é o diferencial escrito na escala da P. Nesse caso, a equação fica:
+Essa é a equação multivariada de resposta à seleção, ou a Equação de Lande. É a equação mais cool, como podemos ver nessa foto:
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("lande.jpg")
+```
+
+Podemos escrever a resposta à seleção em função dos diferenciais de seleção, lembrando que o gradiente de seleção é o diferencial escrito na escala da P. Nesse caso, a equação fica:
 
 $$
 \Delta z = G\beta = GP^{-1}S

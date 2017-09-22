@@ -66,7 +66,7 @@ Para começar, precisamos instalar um pacote (chamado evolqg) e carregar os dado
 
 ```{r packagesfake, eval = FALSE}
 # Instalando o pacote de genética quantitativa evolutiva
-if(!require){install.packages("evolqg")}
+if(!require(evolqg)){install.packages("evolqg")}
 
 # Carregando o pacote evolqg
 library(evolqg)

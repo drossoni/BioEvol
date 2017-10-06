@@ -1,16 +1,12 @@
 ---
 title: "Tutorial Biologia Evolutiva 2017"
 author: "Diogo Melo"
-date: "October 12, 2016"
+date: "October 12, 2017"
 output:
   html_document:
     highlight: tango
     number_sections: no
     theme: flatly
-    toc: yes
-    toc_float:
-      collapsed: no
-      smooth_scroll: no
   pdf_document:
     toc: yes
 ---
@@ -30,4 +26,10 @@ Primeiro alguns links:
 ## Aulas
 
 1. [Aula 1 - Genética quantitativa e evolução](http://diogro.github.io/BioEvol/aula1.html)
-
+2. [Aula 2 - ] (http://diogro.github.io/BioEvol/aula2.html)
+3. [Aula 3 - ]  (http://diogro.github.io/BioEvol/aula3.html)
+4. [Aula 4 - ] 
+5. [Aula 5 - ]
+6. [Aula 6 - ]
+7. [Aula 7 - ]
+8. [Aula 8 - ]

@@ -3,6 +3,8 @@ title: "Tutorial Biologia Evolutiva 2017"
 author: "Diogo Melo"
 date: "October 12, 2016"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     highlight: tango
     number_sections: yes
@@ -227,12 +229,12 @@ ggpairs(dentus, mapping = aes(color = species),
         columns = c("humerus", "ulna","femur", "tibia"))
 ```
 
-<!-- # Leitura da Aula 2 -->
+# Leitura da Aula 2
 
-<!-- - [The Ecological Significance of Correlation Pleiades](https://www.jstor.org/stable/2405824) ([pdf](https://github.com/lem-usp/site-bio208/raw/master/static/pdfs/artigos/Berg-1960.pdf)) -->
+- [The Ecological Significance of Correlation Pleiades](https://www.jstor.org/stable/2405824) ([pdf](https://github.com/lem-usp/site-bio208/raw/master/static/pdfs/artigos/Berg-1960.pdf))
 
-<!--     __Abstract:__ -->
-<!--     The phenomenon of correlation pleiades, i.e., the presence of correlations between some quantitative characteristics of certain parts of an organism and at the same time by the absence of correlations between these and the other parts demonstrates the independence of certain developmental processes with respect to other processes within the organism. The study of correlation sets makes it possible to establish the degree of such independence. The adoption of a quantitative criterion provides an adequate basis for the comparative method in the study of stabilizing selection. Nineteen species of herbaceous plants have been studied in order to determine the variability in the degree of dependence between the dimensions of different parts of an organism. It has been established that twelve species have correlation pleiades, while seven species have no correlation pleiades with respect to the dimensions of analogous parts. In all the instances of existence of pleiades it was the flower that had become free of the correlation interdependences within the plant organism. Existence of correlation pleiades is associated with the mode of pollen transfer, involving the presence of specific insect pollinators, with adaptations to localize the pollen deposit on some definite part of the body of the pollinating insect, and with at least one of the structural features providing for such localization (zygomorphism, presence of tubular parts, lateral position of flowers, oligomerization and a rigid fixation of the number of homologous parts of a flower). Insects were the selective factor stabilizing the dimensions of those parts of flowers which participate in the process of the precise localization of pollen on the insect body. Stabilizing selection of flower dimensions created correlation pleiades for reproductive organs, as well as for vegetative parts of the same organism. The general principle underlying the origin of developmental homeostasis in the process of evolution is the discrepancy between the agencies participating in the formation of the character and the selective forces determining its function. The same principle is responsible for the origin of correlation pleiades. -->
+    __Abstract:__
+    The phenomenon of correlation pleiades, i.e., the presence of correlations between some quantitative characteristics of certain parts of an organism and at the same time by the absence of correlations between these and the other parts demonstrates the independence of certain developmental processes with respect to other processes within the organism. The study of correlation sets makes it possible to establish the degree of such independence. The adoption of a quantitative criterion provides an adequate basis for the comparative method in the study of stabilizing selection. Nineteen species of herbaceous plants have been studied in order to determine the variability in the degree of dependence between the dimensions of different parts of an organism. It has been established that twelve species have correlation pleiades, while seven species have no correlation pleiades with respect to the dimensions of analogous parts. In all the instances of existence of pleiades it was the flower that had become free of the correlation interdependences within the plant organism. Existence of correlation pleiades is associated with the mode of pollen transfer, involving the presence of specific insect pollinators, with adaptations to localize the pollen deposit on some definite part of the body of the pollinating insect, and with at least one of the structural features providing for such localization (zygomorphism, presence of tubular parts, lateral position of flowers, oligomerization and a rigid fixation of the number of homologous parts of a flower). Insects were the selective factor stabilizing the dimensions of those parts of flowers which participate in the process of the precise localization of pollen on the insect body. Stabilizing selection of flower dimensions created correlation pleiades for reproductive organs, as well as for vegetative parts of the same organism. The general principle underlying the origin of developmental homeostasis in the process of evolution is the discrepancy between the agencies participating in the formation of the character and the selective forces determining its function. The same principle is responsible for the origin of correlation pleiades.
 
 <!-- # Objetivos da Aula 2 -->
 
@@ -276,9 +278,9 @@ ggpairs(dentus, mapping = aes(color = species),
 
 <!-- As covariâncias entre caracteres são quantidades muito importantes na biologia evolutiva, como vamos ver mais adiante no curso. Apesar disso, elas sofrem do mesmo problema das variâncias: dependem da escala absoluta dos caracteres sendo medidos. Assim, não podemos comparar covariâncias entre pares de caracteres que tenham escalas diferentes, e não podemos comparar as covariâncias entre os mesmo caracteres medidos em organismos que tenham escalas diferentes. Para isso, vamos definir uma segunda medida de associação que e admensional, e que pode ser comparada entre escalas: a correlação linear. Note que se medirmos a covariância de um caráter com ele mesmo, chegamos na formula da variância. A partir disso, é fácil mostrar que o valor mais alto que uma covariância pode assumir é o produto dos desvios padrão entre as variâveis medidas (afinal, a covariância máxima de um caráter é com ele mesmo, ou seja, sua variância, que é o desvio padrão ao quadrado). Então, vamos definir a correlação como a proporção da covariância máxima entre dois caracteres, ou a covariância dividido pelo produto dos desvios padrão:  -->
 
-<!-- $$ -->
-<!-- Cor(x, y) = \frac{Cov(x, y)}{\sigma_x \sigma_y} = \frac{1}{N} \sum_{i = 1}^{N} \frac{(x_i - \overline{x})(y_i - \overline y)}{\sigma_x \sigma_y} -->
-<!-- $$ -->
+$$
+Cor(x, y) = \frac{Cov(x, y)}{\sigma_x \sigma_y} = \frac{1}{N} \sum_{i = 1}^{N} \frac{(x_i - \overline{x})(y_i - \overline y)}{\sigma_x \sigma_y}
+$$
 
 <!-- Essa quantidade varia entre -1 e 1, e mede o grau de associação entre duas variáveis numa escala absoluta. Correlações próximas de 1 indicam que os caracteres variam juntos e na mesma direção; correlações próximas de -1 indicam que os caracteres variam juntos mas em direções opostas; correlações próximas de zero indicam que os caracteres são independentes. A correlação pode ser comparada entre caracteres e populações diferentes.  -->
 

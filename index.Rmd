@@ -26,8 +26,8 @@ Primeiro alguns links:
 ## Aulas
 
 1. [Aula 1 - Genética quantitativa e evolução](http://diogro.github.io/BioEvol/aula1.html)
-2. [Aula 2 - ] (http://diogro.github.io/BioEvol/aula2.html)
-3. [Aula 3 - ]  (http://diogro.github.io/BioEvol/aula3.html)
+2. [Aula 2 - Matrizes de covariância](http://diogro.github.io/BioEvol/aula2.html)
+3. [Aula 3 - ](http://diogro.github.io/BioEvol/aula3.html)
 4. [Aula 4 - ] 
 5. [Aula 5 - ]
 6. [Aula 6 - ]

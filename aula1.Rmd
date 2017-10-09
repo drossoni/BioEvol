@@ -1,7 +1,7 @@
 ---
 title: "Tutorial Biologia Evolutiva 2017"
 author: "Diogo Melo"
-date: "October 12, 2016"
+date: "October 16, 2016"
 output:
   html_document:
     highlight: tango
@@ -19,14 +19,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introdução
-
-Primeiro alguns links:
-
-- [Roteiro para elaboração da monografia final](http://diogro.github.io/BioEvol/roteiro.html)
-- [Apostila da disciplina](https://github.com/lem-usp/apostila-bio-evol/blob/master/apostila-Bio312.pdf?raw=true)
-
-## Genética quantitativa e evolução
+# Genética quantitativa e evolução
 
 Neste tutorial vamos passar por todas as etapas de análise de um conjunto de dados em genética quantitativa aplicada à macroevolução. Vamos estudar quatro caracteres quantitativos medidos em cinco espécies de roedores em uma filogenia conhecida. Usando esse conjunto de dados, vamos caracterizar o padrão de modularidade em cada espécie, as diferenças nas morfologias médias, e os processos evolutivos que levaram à diferenciação atual.
 

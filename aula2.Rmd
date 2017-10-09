@@ -1,7 +1,7 @@
 ---
 title: "Tutorial Biologia Evolutiva 2017"
 author: "Diogo Melo"
-date: "October 12, 2016"
+date: "October 23, 2017"
 output:
   html_document:
     highlight: tango
@@ -35,17 +35,17 @@ Com isso vamos poder discutir questões ligadas a função, desenvolvimento e a 
 Para isso, vamos calcular:
 
  1. A matriz de covariância fenotípica total;
- 2. A matriz de covariância fenotípica pode espécie;
+ 2. A matriz de covariância fenotípica por espécie;
  3. A matriz de correlação por espécie;
 
 Além disso, discuta:
 
  1. Qual o padrão modular de cada espécie?
- 2. Qual é a intensidade da associação entre os caractéres em cada espécie?
+ 2. Qual é a intensidade da associação entre os caracteres em cada espécie?
 
 ## Covariâncias e correlações
 
-Para entender como a associação entre os caracteres muda entre espécies, é preciso quantifica-lá. Para isso, vamos utilizar os conceitos de covariância e correlação. A covariância entre duas variáveis é definida como a média do produto dos desvios das médias das variáveis. Ou seja, se $\overline x$ e $\overline y$ são as médias dos caracteres $x$ e $y$, a covariâncias entre eles numa população é:
+Para entender como a associação entre os caracteres muda entre espécies, é preciso quantificá-la. Para isso, vamos utilizar os conceitos de covariância e correlação. A covariância entre duas variáveis é definida como a média do produto dos desvios das médias das variáveis. Ou seja, se $\overline x$ e $\overline y$ são as médias dos caracteres $x$ e $y$, a covariâncias entre eles numa população é:
 
 $$
 Cov(x, y) = \frac{1}{N} \sum_{i = 1}^{N} (x_i - \overline{x})(y_i - \overline y)

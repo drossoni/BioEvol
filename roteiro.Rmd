@@ -26,7 +26,7 @@ De posse destas medidas e das informações extraídas da literatura, o trabalho
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 library(phytools)
-TREE <- "(A:4,(B:3,(C:2,(D:1, E:1):1):1):1);"
+TREE <- "(E:3,((C:1,B:1):1,(D:1, A:1):1)):1;"
 tree <- read.tree(text = TREE)
 plot(tree)
 add.scale.bar(x = 0, y = 5, length = 1)

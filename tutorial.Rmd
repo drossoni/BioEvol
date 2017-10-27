@@ -693,10 +693,10 @@ data(dentus)
 Agora vamos colocar nossa filogenia num objeto do R, usand uma notação parentética:
 
 ```{r, warning=FALSE, message=FALSE}
-TREE <- "(A:4,(B:3,(C:2,(D:1, E:1):1):1):1);"
+TREE <- "(E:3,((C:1,B:1):1,(D:1, A:1):1)):1;"
 tree <- read.tree(text = TREE)
-tree$tip.label = c("A", "B", "C", "D", "E")
-tree$node.label = c("root", "BCDE", "CDE", "DE")
+tree$tip.label = c("E", "C", "B", "D", "A")
+tree$node.label = c("root", "ABCD", "CB", "AD")
 plot(tree, show.node.label=TRUE)
 nodelabels()
 ```
@@ -734,7 +734,7 @@ dentus_ancestral
 Vamos incluir uma coluna de "especie" nessa tabela de estados ancestrais:
 
 ```{r}
-dentus_ancestral = data.frame(species = c("root", "BCDE", "CDE", "DE"), dentus_ancestral)
+dentus_ancestral = data.frame(species =  c("root", "ABCD", "CB", "AD"), dentus_ancestral)
 ```
 
 Agora podemos juntar ela com nossa tabela de médias antiga, e ficar com tudo no mesmo objeto:
@@ -765,8 +765,8 @@ l_dentus$root
 Agora podemos usar esse vetores de caracteres para calcular nossos vetores de mudança fenotípica ao longo da filogenia, os famigerados $\Delta z$. Para isso, é só subtrair o descendente do ancestral. Por exemplo, para o $\Delta z$ associado ao ramo que vai do nó DE para o terminal D, fazemos:
 
 ```{r}
-deltaZ_DE_D = l_dentus$D - l_dentus$DE
-deltaZ_DE_D
+deltaZ_AD_D = l_dentus$D - l_dentus$AD
+deltaZ_AD_D
 ```
 
 Isso é o vetor de mudança evolutiva entre a espécie D e seu ancestral mais próximo.
@@ -886,7 +886,7 @@ Agora podemos usar essa função para calcular correlações entre todos os noss
 ```{r}
 cov_matrices = dlply(dentus, .(species), function(x) cov(x[,1:4]))
 PC1_D = eigen(cov_matrices$D)$vectors[,1]
-abs(corVector(PC1_D, deltaZ_DE_D))
+abs(corVector(PC1_D, deltaZ_AD_D))
 ```
 
 Parce que sim!!

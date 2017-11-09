@@ -421,7 +421,7 @@ Olhe para todas as matrizes de correlação. Quais são os padrões modulares? C
 
 ## Componentes principais
 
-A tecnica de componentes princiais (também conhecida como principal component analysis ou PCA) consiste em encontrar eixos ortogonais (com angulo de 90 graus entre eles) nos quais as variáveis medidas são não correlacionadas. Em outras palavras, nós descrevemos os individuos das nossas populações usando eixos relacionados às medidas tomadas em cada individuo, então um eixo corresponde ao comprimento do humero, outro eixo ao comprimento da ulna e assim por diante. Mas nesses eixos, que tem uma interpretação biológica clara, as medidas dos individuos em cada eixo são correlacionadas.
+A tecnica de componentes princiais (também conhecida como principal component analysis ou PCA) consiste em encontrar eixos ortogonais (com ângulo de 90 graus entre eles) nos quais as variáveis medidas são não correlacionadas. Em outras palavras, nós descrevemos os individuos das nossas populações usando eixos relacionados às medidas tomadas em cada individuo, então um eixo corresponde ao comprimento do humero, outro eixo ao comprimento da ulna e assim por diante. Mas nesses eixos, que tem uma interpretação biológica clara, as medidas dos individuos em cada eixo são correlacionadas.
 
 ### Mudando os eixos
 
@@ -722,7 +722,7 @@ humerus_ancestral$ace
 ```
 
 Isso é um vetor com um valor para cada nó, que estão numerados. Podemos ver na filogenia a quais nós correspondem esses números.
-__Pergunta:__ De acordo com essa reconstrução, o humero está aumentando ou diminuindo a medida de subimos nos nós da filogenia?
+__Pergunta:__ De acordo com essa reconstrução, o femur está aumentando ou diminuindo a medida de subimos nos nós da filogenia?
 
 Vamos agora calcular os estados ancestrais para os outros caracteres:
 
@@ -756,20 +756,20 @@ Essa tabela é ótima para o excel (guarde ela! vamos usar na próxima aula (ach
 l_dentus = dlply(dentus_means_ace, .(species), numcolwise(identity))
 ```
 
-Esse objeto l_dentus é muito conveniente, por que com ele podemos acessar as médias de qualquer ponto da filogenia usando o operador $. Por exemplo, para obter a média da raiz da filogenia:
+Esse objeto l_dentus é muito conveniente, porque com ele podemos acessar as médias de qualquer ponto da filogenia usando o operador $. Por exemplo, para obter a média da raiz da filogenia:
 
 ```{r}
 l_dentus$root
 ```
 
-Agora podemos usar esse vetores de caracteres para calcular nossos vetores de mudança fenotípica ao longo da filogenia, os famigerados $\Delta z$. Para isso, é só subtrair o descendente do ancestral. Por exemplo, para o $\Delta z$ associado ao ramo que vai do nó DE para o terminal D, fazemos:
+Agora podemos usar esse vetores de caracteres para calcular nossos vetores de mudança fenotípica ao longo da filogenia, os famigerados $\Delta z$. Para isso, é só subtrair o descendente do ancestral. Por exemplo, para o $\Delta z$ associado ao ramo que vai do nó AD para o terminal D, fazemos:
 
 ```{r}
 deltaZ_AD_D = l_dentus$D - l_dentus$AD
 deltaZ_AD_D
 ```
 
-Isso é o vetor de mudança evolutiva entre a espécie D e seu ancestral mais próximo.
+Este é o vetor de mudança evolutiva entre a espécie D e seu ancestral mais próximo.
 
 ## Correlação de vetores
 
@@ -826,7 +826,7 @@ $$
 cos\theta = \frac{a \cdot b}{\|a\|\|b\|}
 $$
 
-Ou seja, o cosseno do angulo entre dois vetores pode ser escrito como o __produto interno entre eles dividido pelo produto das suas normas__. Esse valor de cosseno pode ser utilizado como uma medida de similaridade de vetores no que se refere à sua direção. Se dois vetores apontam no mesmo sentido, o angulo entre eles é zero e o cosseno é 1; se eles apontam em direções ortogonoais, o angulo entre eles é de noventa graus e o cosseno é zero.
+Ou seja, o cosseno do ângulo entre dois vetores pode ser escrito como o __produto interno entre eles dividido pelo produto das suas normas__. Esse valor de cosseno pode ser utilizado como uma medida de similaridade de vetores no que se refere à sua direção. Se dois vetores apontam no mesmo sentido, o ângulo entre eles é zero e o cosseno é 1; se eles apontam em direções ortogonoais, o ângulo entre eles é de noventa graus e o cosseno é zero.
 
 Para entender por que nós costumamos chamar essa medida de correlação de vetores, pense na equaçao da correlação entre $x$ e $y$:
 
@@ -858,7 +858,7 @@ $$
 Cor(x, y) =  \frac{x \cdot y}{\|x\|\|y\|}
 $$
 
-Que é a formula para o cosseno do angulo entre $x$ e $y$! Então, o cosseno do angulo entre dois vetores e a correlação entre eles são a mesma coisa se a média deles for zero. Dai o nome correlação de vetores para o cosseno do angulo entre eles.
+Que é a formula para o cosseno do ângulo entre $x$ e $y$! Então, o cosseno do ângulo entre dois vetores e a correlação entre eles são a mesma coisa se a média deles for zero. Dai o nome correlação de vetores para o cosseno do ângulo entre eles.
 
 ### Calculando correlações no R
 
@@ -1111,7 +1111,7 @@ ggplot(data, aes(x, y)) + geom_polygon(data = shade, aes(x, y), fill = "lightblu
 
 A região em azul representa o limiar de seleção (apenas pais maiores que 1 deixam descententes). A média dos pais depois da seleção está marcada pela linha tracejada vertical. Usando uma regressão linear, podemos descobrir a média dos filhos dos pais que sobrevivem à seleção. A linha tracejada horizontal marca a média dos filhos após a seleção. O coeficiente de inclinação da regressão entre pais e filhos é a herdabilidade do caráter na população. Como nós centralizamos os pais e a reta de regressão passa pelo zero, sabemos que a média dos pais e filhos antes da seleção eram iguais.
 
-A diferença entre a média dos pais antes e depois da seleção é chamada de diferencial de seleção ($S$), enquanto a diferença na média dos filhos é chamada de resposta à seleção ($R$). A razão entre ela, ou o coeficiente da inclinação da reta de regressão entre pais e filhos, ou a tangente do angulo da reta, é a herdabilidade ($h^2$). Graficamente:
+A diferença entre a média dos pais antes e depois da seleção é chamada de diferencial de seleção ($S$), enquanto a diferença na média dos filhos é chamada de resposta à seleção ($R$). A razão entre ela, ou o coeficiente da inclinação da reta de regressão entre pais e filhos, ou a tangente do ângulo da reta, é a herdabilidade ($h^2$). Graficamente:
 
 ```{r, echo = FALSE}
 S = data.frame(x = c(0, 0, x_mean, x_mean),

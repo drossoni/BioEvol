@@ -219,9 +219,11 @@ Comparou?
 
 São os mesmos valores. Os values são as variâncias nas direções dos componentes principais.
 
-## O primeiro componente principal
+## Linha de menor resistência evolutiva e o primeiro componente principal
 
-Vocês leram sobre linhas de menor resistencia evolutiva no artigo do Schluter, e agora podemos entender porque essa linha corresponde ao primeiro componente principal. A quantidade de variação total na população é sempre preservada em todas essas analises que fizemos, afinal são só rotações. Para conferir isso, vamos somar as variâncias originais e somar as variâncias saindo da eigen():
+Um aspecto da variação multivariada de uma população que é fundamental para entendermos o processo evolutivo é o da linha de menor resistência evolutiva. Esse conceito, introduzido por [Schluter em 1996](https://www.jstor.org/stable/2410734?seq=1#page_scan_tab_contents), dá importância especial para a direção no morfoespaço de uma população que acumula mais variação que qualquer outra direção. Como a magnitude da mudança evolutiva depende diretamente da presença de variação, a direção que acumula mais variação deve ser uma direção de mudança preferencial, inclusive enviezando a resposta à seleção em outras direções, e sendo portando uma linha de menor resistência à mudança evolutiva. 
+
+Para encontrar a linha de menor resistência de uma população, podemos utilizar uma analise de PCA, pois a linha de menor resisência corresponde exatamente ao primeiro componente principal, e agora podemos entender o porque disso. A quantidade de variação total na população é sempre preservada em todas essas analises que fizemos, afinal são só rotações. Para conferir isso, vamos somar as variâncias originais e somar as variâncias saindo da eigen():
 
 ```{r}
 var(dentus_A$humerus) + var(dentus_A$ulna) + var(dentus_A$femur) + var(dentus_A$tibia)

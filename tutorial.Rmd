@@ -715,7 +715,7 @@ humerus_ancestral = ace(dentus_means$humerus, tree)
 humerus_ancestral
 ```
 
-Novamente o objeto de saida tem várias partes, chamadas ace, sigma2 e CI95. ace são as estimativas propriamente ditas; sigma2 é um parâmetro ligado à taxa de evolução sobre um modelo de movimento browniano; e CI95 são os intervalos de confiânça para as estimativas em cada nó. Nesse curso vamos nos preocupar apenas com as estimativas, e podemos acessá-las usando o operador $:
+Novamente o objeto de saida tem várias partes, chamadas ace, sigma2 e CI95. ace são as estimativas propriamente ditas; sigma2 é um parâmetro ligado à taxa de evolução assumindo um modelo de movimento browniano; e CI95 são os intervalos de confiânça para as estimativas em cada nó. Nesse curso vamos nos preocupar apenas com as estimativas, e podemos acessá-las usando o operador $:
 
 ```{r}
 humerus_ancestral$ace
@@ -923,39 +923,39 @@ data(dentus)
 cov_matrices = dlply(dentus, .(species), function(x) cov(x[,1:4]))
 ```
 
-A matriz do ancestral comum entre as espécies D e E é dada pela ponderada entre as matrizes atuais:
+A matriz do ancestral comum entre as espécies A e D é dada pela ponderada entre as matrizes atuais:
 
 ```{r}
-cov_matrix_ED = (60 * cov_matrices$E + 60 * cov_matrices$D)/120
-cov_matrix_ED
+cov_matrix_AD = (60 * cov_matrices$A + 60 * cov_matrices$D)/120
+cov_matrix_AD
 ```
 
 A ideia é que essa matriz é a mesma coisa que fazer a covariância normalmente, mas usando a média das espécies separadamente. Vamos usar a formula de covariância diretamente, mas controlando para o número de graus de liberdade:
 
 ```{r}
 means = daply(dentus, .(species), function(x) colMeans(x[,1:4]))
-dentus_DE = dentus[dentus$species == "D" | dentus$species == "E",]
-medias_DE = means[dentus[dentus$species == "D" | dentus$species == "E", 5],]
+dentus_AD = dentus[dentus$species == "A" | dentus$species == "D",]
+medias_AD = means[dentus[dentus$species == "A" | dentus$species == "D", 5],]
 
 # Essa correção pelos graus de liberdade é meio confusa, mas pense que a var()
 #vai tirar um grau de liberdade, mas a gente calculou duas médias,
 # então precisamos tirar outro!
-(119/(119-1)) * var(dentus_DE[,1:4] - medias_DE)
+(119/(119-1)) * var(dentus_AD[,1:4] - medias_AD)
 ```
 
 Bacana, deu a mesma coisa. Outra solução nesse caso é escrever o problema como uma regressão linear e extrair a covariância dos residuos:
 
 ```{r}
-residuos_DE = residuals(lm(as.matrix(dentus_DE[,1:4])~dentus_DE[,5]))
-(119/(119-1)) * cov(residuos_DE)
+residuos_AD = residuals(lm(as.matrix(dentus_AD[,1:4])~dentus_AD[,5]))
+(119/(119-1)) * cov(residuos_AD)
 ```
 
-O resultado é o mesmo. Você pode ler o termo `as.matrix(dentus_DE[,1:4])~dentus_DE[,5]` como: _as colunas de 1 a 4 do objeto dentus_DE em função da quinta coluna do objeto dentus_DE_. Você pode pensar no operado `~` como um "_em função de_". Variáveis dependentes à esquerda e preditoras à direita.
+O resultado é o mesmo. Você pode ler o termo `as.matrix(dentus_AD[,1:4])~dentus_AD[,5]` como: _as colunas de 1 a 4 do objeto dentus_AD em função da quinta coluna do objeto dentus_AD_. Você pode pensar no operado `~` como um "_em função de_". Variáveis dependentes à esquerda e preditoras à direita.
 
 Um jeito mais simples ainda é usar a função CalculateMatrix() do pacote evolqg, que calcula os graus de liberdade corretamente a partir do modelo linear:
 
 ```{r}
-CalculateMatrix(lm(as.matrix(dentus_DE[,1:4])~dentus_DE[,5]))
+CalculateMatrix(lm(as.matrix(dentus_AD[,1:4])~dentus_AD[,5]))
 ```
 
 Ótimo, temos vários jeitos de calcular as matrizes de covariancia usando as médias de cada espécie. Essa matriz ponderada de vários grupos ao mesmo tempo costuma ser chamada de $\mathbf{W}$, ou matriz ponderada dentro de grupos (within-groups, dai o $\mathbf{W}$).
@@ -974,10 +974,10 @@ Tudo isso é bom e poderiámos calcular as matrizes ancestrais assim para os nos
 Primeiro a filogenia:
 ```{r}
 if(!require(ape)){install.packages("ape"); library(ape)}
-TREE <- "(A:4,(B:3,(C:2,(D:1, E:1):1):1):1);"
+TREE <- "(E:3,((C:1,B:1):1,(D:1, A:1):1)):1;"
 tree <- read.tree(text = TREE)
-tree$tip.label = c("A", "B", "C", "D", "E")
-tree$node.label = c("root", "BCDE", "CDE", "DE")
+tree$tip.label = c("E", "C", "B", "D", "A")
+tree$node.label = c("root", "ABCD", "CB", "AD")
 ```
 
 E agora usamos a filogenia e a lista de matrizes atuais na funçao PhyloW para calcular uma matriz ancestral (ou dentro de grupos) para cada nó:
@@ -1302,10 +1302,10 @@ cov_matrices = dlply(dentus, .(species), function(x) cov(x[,1:4]))
 
 # Filogenia
 if(!require(ape)){install.packages("ape"); library(ape)}
-TREE <- "(A:4,(B:3,(C:2,(D:1, E:1):1):1):1);"
+TREE <- "(E:3,((C:1,B:1):1,(D:1, A:1):1)):1;"
 tree <- read.tree(text = TREE)
-tree$tip.label = c("A", "B", "C", "D", "E")
-tree$node.label = c("root", "BCDE", "CDE", "DE")
+tree$tip.label = c("E", "C", "B", "D", "A")
+tree$node.label = c("root", "ABCD", "CB", "AD")
 
 # Matrizes ancestrais
 all_cov_matrices = PhyloW(tree, cov_matrices)
@@ -1316,7 +1316,7 @@ dentus_means = ddply(dentus, "species", numcolwise(mean))
 
 # Medias ancestrais
 dentus_ancestral = sapply(dentus_means[2:5], function(x) ace(x, tree)$ace)
-dentus_ancestral = data.frame(species = c("root", "BCDE", "CDE", "DE"), dentus_ancestral)
+dentus_ancestral = data.frame(species = c("root", "ABCD", "CB", "AD"), dentus_ancestral)
 dentus_means_ace = rbind(dentus_means, dentus_ancestral)
 all_means = dlply(dentus_means_ace, .(species), numcolwise(identity))
 ```
@@ -1357,11 +1357,11 @@ Ou salvar em um arquivo:
 write.csv(deltaZ_table, "meu_arquivo_de_deltaZs.csv")
 ```
 
-Agora temos os $\Delta z$ e as matrizes, podemos estimar os $\beta$ ao longo da filogenia. Por exemplo, o $\beta$ no ramo C-CDE:
+Agora temos os $\Delta z$ e as matrizes, podemos estimar os $\beta$ ao longo da filogenia. Por exemplo, o $\beta$ no ramo C-CB:
 
 ```{r}
-beta_C_CDE = solve(all_cov_matrices$CDE, delta_Zs$C)
-beta_C_CDE
+beta_C_CB = solve(all_cov_matrices$CB, delta_Zs$C)
+beta_C_CB
 ```
 
 Ou seja, aumento dos membros anteriores e diminuição dos posteriores. Vamos agora tentar entender o que esse $\beta$ significa.
@@ -1379,25 +1379,25 @@ Temos duas comparações importantes a serem feitas: (1) entre a mudança evolut
 
 ```{r}
 # Auto decomposição da matriz
-eigCDE = eigen(all_cov_matrices$CDE)
+eigCB = eigen(all_cov_matrices$CB)
 
 # Variancia explicada por cada PC:
-eigCDE$values / sum(eigCDE$values) * 100
+eigCB$values / sum(eigCB$values) * 100
 
 # Primeiro e segundo PCs
-PC1_cde = eigCDE$vectors[,1]
-PC2_cde = eigCDE$vectors[,2]
+PC1_CB = eigCB$vectors[,1]
+PC2_CB = eigCB$vectors[,2]
 
 # Correlação entre PCs e deltaZ
 # Nos usamos a funçao abs (valor absoluto) aqui pq o sinal de uma correlação com um PC não interessa.
 # Isso pq PCs são direções e não sentidos.
-abs(corVector(delta_Zs$C, PC1_cde))
-abs(corVector(delta_Zs$C, PC2_cde))
+abs(corVector(delta_Zs$C, PC1_CB))
+abs(corVector(delta_Zs$C, PC2_CB))
 
 # Correlação entre beta e delta Z.
 # Aqui o sinal da correlação interessa
 # correlações negativas indicam seleção pra um lado e resposta pro outro.
-corVector(delta_Zs$C, beta_C_CDE)
+corVector(delta_Zs$C, beta_C_CB)
 ```
 
 Então, ficamos assim: correlações baixas entre $\Delta z$ e os primeiros componentes (0.07 e 0.58), mesmo eles explicando conjuntamente 75\% (52 + 23) da variação total. Isso exclui a hipótese de restrição evolutiva. Mas, quando olhamos a correlação entre seleção e resposta, temos uma correlação de 0.97, indicando que a diversificação da espécie C se deu de forma alinhada com a seleção (e não seguindo a linha de menor resistência, como vimos com a correlação de 0.07 com o PC1). Sabemos também que a seleção foi para aumentar os membros anteriores e diminuir os posteriores. Será que o habito de vida dessa espécie pode trazer alguma pista?

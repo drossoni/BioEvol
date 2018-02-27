@@ -274,9 +274,9 @@ div.tocify {
 </ul>
 <div id="matrizes-ancestrais" class="section level2">
 <h2><span class="header-section-number">2.1</span> Matrizes ancestrais</h2>
-<p>O calculo das matrizes ancestrais é feito como uma média ponderada das matrizes ao longo da filogenia. Isso é equivalente a calcular uma matriz de covariância usando a formula usual da covariância, mas substituindo a média global pela média da espécie do indivíduo sendo considerado. Se <span class="math inline">\(\overline{z}_{sp[k]}^i\)</span> representa a média da espécie do indivíduo <span class="math inline">\(k\)</span> para o caráter <span class="math inline">\(i\)</span>, a matriz de covariância para um nó ancestral é dada por:</p>
+<p>O calculo das matrizes ancestrais é feito como uma média ponderada das matrizes ao longo da filogenia. Isso é equivalente a calcular uma matriz de covariância usando a formula usual da covariância, mas substituindo a média global pela média da espécie do indivíduo sendo considerado. Se <span class="math inline">\(\overline{z^i}_{sp[k]}\)</span> representa a média da espécie do indivíduo <span class="math inline">\(k\)</span> para o caráter <span class="math inline">\(i\)</span>, a matriz de covariância para um nó ancestral é dada por:</p>
 <p><span class="math display">\[
-Cov(z^i, z^j) = \frac{1}{N} \sum_{k = 1}^{N} (z_{k}^i - \overline{z}_{sp[k]}^i)(z_{k}^j - \overline{z}_{sp[k]}^j)
+Cov(z^i, z^j) = \frac{1}{N} \sum_{k = 1}^{N} (z_{k}^i - \overline{z^i}_{sp[k]})(z_{k}^j - \overline{z^j}_{sp[k]})
 \]</span></p>
 <p>Onde a soma é feita para todos os indivíduos para a espécies descendentes do nó em questão. Vamos testar essa história. Primeiro vamos carregar os dados e calcular as matrizes para todas as espécies atuais.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(evolqg)){<span class="kw">install.packages</span>(<span class="st">&quot;evolqg&quot;</span>); <span class="kw">library</span>(evolqg)}</code></pre></div>

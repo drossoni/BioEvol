@@ -30,5 +30,5 @@ Primeiro alguns links:
 2. [Aula 2 - Matrizes de covariância](http://diogro.github.io/BioEvol/aula2.html)
 3. [Aula 3 - Componentes principais](http://diogro.github.io/BioEvol/aula3.html)
 4. [Aula 4 - Estados ancestrais e resposta evolutiva](http://diogro.github.io/BioEvol/aula4.html)
-5. Aula 5 - Matrizes Ancestrais
-6. Aula 6 - Gradientes de Seleção
+5. [Aula 5 - Matrizes Ancestrais](http://diogro.github.io/BioEvol/aula5.html)
+6. [Aula 6 - Gradientes de Seleção](http://diogro.github.io/BioEvol/aula6.html)
